@@ -1,0 +1,44 @@
+﻿<Window x:Class="Biomarkt_App_WPF.MainMenu"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Biomarkt_App_WPF"
+        mc:Ignorable="d"
+        Background="Gray"
+        WindowStartupLocation="CenterScreen"
+        Title="MainWindow" Height="280" Width="760">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="30"/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="30"/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="30"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+        <Button x:Name="productsButton" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="2" Click="productsButton_Click">
+            <Grid>
+                <Image Height="165" Source="/Resources/BtnImgProducts.png" Stretch="Fill" Width="325"/>
+                <TextBlock Text="Produkte verwalten" VerticalAlignment="Center" HorizontalAlignment="Center" 
+                           Foreground="White" TextAlignment="Center" FontSize="16" FontWeight="Bold" />
+            </Grid>
+        </Button>
+        <Button x:Name="invoiceButton" Grid.Column="4" Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="2">
+            <Grid>
+                <Image Height="165" Source="/Resources/BtnImgBill.png" Stretch="Fill" Width="325"/>
+                <TextBlock Text="Rechnung erstellen" VerticalAlignment="Center" HorizontalAlignment="Center" 
+                           Foreground="White" TextAlignment="Center" FontSize="16" FontWeight="Bold"/>
+            </Grid>
+
+        </Button>
+       
+    </Grid>
+</Window>

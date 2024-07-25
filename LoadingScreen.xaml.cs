@@ -35,9 +35,10 @@ namespace Biomarkt_App_WPF
                 await Task.Delay(50);
             }
 
+            MainMenu mainMenu = new MainMenu();
+            mainMenu.Show();
+
             this.Close();
-
-
         }
 
         private void ProgressBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)

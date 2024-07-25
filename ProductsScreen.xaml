@@ -1,0 +1,88 @@
+﻿<Window x:Class="Biomarkt_App_WPF.ProductsScreen"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Biomarkt_App_WPF"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Title="ProductsScreen" Height="800" Width="1200">
+    <Window.Resources>
+        <Style x:Key="inputStackTextBox" TargetType="TextBox">
+            <Setter Property="Background" Value="Black"/>
+            <Setter Property="BorderBrush" Value="White"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Cursor" Value="IBeam"/>
+            <Setter Property="Height" Value="35"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="20"/>
+        </Style>
+        <Style x:Key="inputStackLabel" TargetType="Label">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="FontSize" Value="20"/>
+        </Style>
+        <Style x:Key="crudButtons" TargetType="Button">
+            <Setter Property="Background" Value="Black"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Height" Value="35"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="BorderBrush" Value="White"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Margin" Value="0,10,0,10"/>
+        </Style>
+    </Window.Resources>
+    <Grid Margin="0,0,0,0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="20"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
+        <Image Grid.ColumnSpan="7" Grid.RowSpan="9" Source="/Resources/ImgBgProducts.png" Stretch="Fill"/>
+        <StackPanel Grid.Row="1" Grid.Column="1">
+            <Label Content="Name" Style="{StaticResource inputStackLabel}"/>
+            <TextBox x:Name="textBoxProductName" Style="{StaticResource inputStackTextBox}" />
+        </StackPanel>
+        <StackPanel Grid.Row="2" Grid.Column="1">
+            <Label Content="Marke" Style="{StaticResource inputStackLabel}"/>
+            <TextBox x:Name="textBoxProductBrand" Style="{StaticResource inputStackTextBox}" />
+        </StackPanel>
+        <StackPanel Grid.Row="3" Grid.Column="1">
+            <Label Content="Kategorie" Style="{StaticResource inputStackLabel}"/>
+            <ComboBox x:Name="comboBoxProductCategory" Height="35" Background="Black" BorderBrush="Green" BorderThickness="1">
+                <ComboBoxItem Content="Obst"/>
+                <ComboBoxItem Content="Gemüse"/>
+                <ComboBoxItem Content="Fleisch"/>
+                <ComboBoxItem Content="Fisch"/>
+                <ComboBoxItem Content="Getränke"/>
+            </ComboBox>
+        </StackPanel>
+        <StackPanel Grid.Row="4" Grid.Column="1">
+            <Label Content="Preis" Style="{StaticResource inputStackLabel}"/>
+            <TextBox x:Name="textBoxProductPrice" Style="{StaticResource inputStackTextBox}" />
+        </StackPanel>
+        <StackPanel Grid.Column="1" Grid.Row="5" Margin="2,2,10,2" Grid.RowSpan="3">
+            <Button x:Name="btnProductSafe" Content="Speichern" Style="{StaticResource crudButtons}" Click="btnProductSafe_Click" />
+            <Button x:Name="btnProductEdit" Content="Bearbeiten" Style="{StaticResource crudButtons}" Click="btnProductEdit_Click" />
+            <Button x:Name="btnProductClear" Content="Felder leeren" Style="{StaticResource crudButtons}" Click="btnProductClear_Click"/>
+            <Button x:Name="btnProductDelete" Content="Löschen" Style="{StaticResource crudButtons}" Click="btnProductDelete_Click"/>
+        </StackPanel>
+        <DataGridCell Grid.Column="3" Grid.Row="1" Grid.ColumnSpan="3" Grid.RowSpan="7" Background="Black"/>
+    </Grid>
+</Window>

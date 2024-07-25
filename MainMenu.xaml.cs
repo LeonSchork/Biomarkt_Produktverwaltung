@@ -14,12 +14,20 @@ namespace Biomarkt_App_WPF
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainMenu : Window
     {
-        public MainWindow()
+        public MainMenu()
         {
             InitializeComponent();
             
+        }
+
+        private void productsButton_Click(object sender, RoutedEventArgs e)
+        {
+            ProductsScreen productsScreen = new ProductsScreen();
+            productsScreen.Show();
+
+            this.Close();
         }
     }
 
