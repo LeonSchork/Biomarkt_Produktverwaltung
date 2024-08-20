@@ -5,6 +5,10 @@
              StartupUri="MainMenu.xaml">
              <!--StartupUri="LoadingScreen.xaml">-->
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Biomarkt_App_WPF;component/Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

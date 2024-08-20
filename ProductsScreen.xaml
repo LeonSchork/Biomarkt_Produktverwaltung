@@ -8,69 +8,6 @@
         WindowStartupLocation="CenterScreen"
         Title="ProductsScreen" Height="800" Width="1200">
 
-    <!-- Window Resources: Styles for various controls -->
-    <Window.Resources>
-        <!-- Style for TextBox in input fields -->
-        <Style x:Key="inputStackTextBox" TargetType="TextBox">
-            <Setter Property="Background" Value="Black"/>
-            <Setter Property="BorderBrush" Value="DimGray"/>
-            <Setter Property="BorderThickness" Value="2"/>
-            <Setter Property="Cursor" Value="IBeam"/>
-            <Setter Property="FontSize" Value="20"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Height" Value="35"/>
-        </Style>
-
-        <!-- Style for Label in input fields -->
-        <Style x:Key="inputStackLabel" TargetType="Label">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="FontSize" Value="20"/>
-            <Setter Property="FontWeight" Value="Medium"/>
-            <Setter Property="Foreground" Value="White"/>
-        </Style>
-
-        <!-- Style for CRUD buttons -->
-        <Style x:Key="crudButtons" TargetType="Button">
-            <Setter Property="Background" Value="Black"/>
-            <Setter Property="BorderBrush" Value="DimGray"/>
-            <Setter Property="BorderThickness" Value="2"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="FontSize" Value="20"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Height" Value="35"/>
-            <Setter Property="Margin" Value="0,10,0,10"/>
-        </Style>
-
-        <!-- Style for ComboBox in input fields -->
-        <Style x:Key="categoryComboBox" TargetType="ComboBox">
-            <Setter Property="Background" Value="Green"/>
-            <Setter Property="BorderBrush" Value="Black"/>
-            <Setter Property="BorderThickness" Value="2"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Foreground" Value="Black"/>
-            <Setter Property="Padding" Value="5"/>
-        </Style>
-
-        <!-- Style for DataGrid -->
-        <Style x:Key="productsDataGrid" TargetType="DataGrid">
-            <Setter Property="Background" Value="Black"/>
-            <Setter Property="BorderBrush" Value="DimGray"/>
-            <Setter Property="BorderThickness" Value="3"/>
-            <Setter Property="CanUserResizeColumns" Value="False"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="HorizontalGridLinesBrush" Value="LightGray"/>
-            <Setter Property="RowBackground" Value="Gray"/>
-            <Setter Property="VerticalGridLinesBrush" Value="LightGray"/>
-        </Style>
-
-        <!-- Style for DataGrid Column Header -->
-        <Style x:Key="dataGridColumnHeader" TargetType="DataGridColumnHeader">
-            <Setter Property="Background" Value="White"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="FontStyle" Value="Normal"/>
-            <Setter Property="Foreground" Value="Black"/>
-        </Style>
-    </Window.Resources>
 
     <!-- Main Grid Layout -->
     <Grid Margin="0,0,0,0">
@@ -141,11 +78,13 @@
         </StackPanel>
 
         <!-- Dev Buttons -->
-        <StackPanel Grid.Row="7" Grid.Column="1">
+        <!--<StackPanel Grid.Row="7" Grid.Column="1">
             <Button x:Name="InsertTestData" Content="TestData" Style="{StaticResource crudButtons}" Click="InsertTestData_Click"/>
             <Button x:Name="DeleteTestData" Content="Delete TestData" Style="{StaticResource crudButtons}" Click="DeleteTestData_Click"/>
-        </StackPanel>
-
+        
+        </StackPanel>-->
+        <Button x:Name="GoBackBtn" Content="Zurück" Grid.Column="1" Grid.Row="7" Style="{StaticResource crudButtons}" Click="GoBackBtn_Click"/>
+        
         <!-- Products DataGrid -->
         <DataGrid x:Name="ProductsDGV" AutoGenerateColumns="False" ColumnWidth="*" 
                   Grid.Column="3" Grid.Row="1" Grid.ColumnSpan="3" Grid.RowSpan="7" 

@@ -36,7 +36,9 @@ namespace Biomarkt_App_WPF
         // Event handler to save a new product to the database
         private void btnProductSafe_Click(object sender, RoutedEventArgs e)
         {
-            if (ValidateUserInput() == true)
+            string[] inputValues = { textBoxProductName.Text, textBoxProductBrand.Text, comboBoxProductCategory.Text };
+
+            if (HelperMethods.ValidateStringInput(inputValues) && HelperMethods.ValidateFloatInput(textBoxProductPrice.Text))
             {
                 Product product = GetInputFields();
                 string query = "INSERT INTO Products (ProductName, ProductBrand, ProductCategory, ProductPrice) VALUES (@ProductName, @ProductBrand, @ProductCategory, @ProductPrice)";
@@ -44,9 +46,9 @@ namespace Biomarkt_App_WPF
                     new SqlParameter("@ProductName", product.Name),
                     new SqlParameter("@ProductBrand", product.Brand),
                     new SqlParameter("@ProductCategory", product.Category),
-                    new SqlParameter("@ProductPrice", product.Price)
+                    new SqlParameter("@ProductPrice", product.Price) 
                 };
-                ExecuteQuery(query, parameters);
+                HelperMethods.ExecuteQuery(dbConnection, query, parameters);
                 ShowProducts();
                 ClearProductFields();
             }
@@ -70,7 +72,7 @@ namespace Biomarkt_App_WPF
                 new SqlParameter("@ProductCategory", product.Category),
                 new SqlParameter("@ProductPrice", product.Price)
             };
-            ExecuteQuery(query, parameters);
+            HelperMethods.ExecuteQuery(dbConnection, query, parameters);
             ShowProducts();
         }
 
@@ -85,8 +87,8 @@ namespace Biomarkt_App_WPF
             }
 
             string query = "DELETE FROM Products WHERE Id = @Id";
-            SqlParameter[] parameter = {new SqlParameter("@Id", lastSelectedProductKey)};
-            ExecuteQuery(query, parameter);
+            SqlParameter[] parameters = {new SqlParameter("@Id", lastSelectedProductKey)};
+            HelperMethods.ExecuteQuery(dbConnection, query, parameters);
             ShowProducts();
         }
 
@@ -117,8 +119,15 @@ namespace Biomarkt_App_WPF
                 lastSelectedProductKey = (int)rowView["Id"];
             }
         }
+        //Event handler to close products screen and reopen main menu
+        private void GoBackBtn_Click(object sender, RoutedEventArgs e)
+        {
+            MainMenu mainMenu = new MainMenu();
+            mainMenu.Show();
+            this.Close();
+        }
 
-        #region Dev Buttons
+        #region Dev stuff
         // Event handler to insert test data into the input fields
         private void InsertTestData_Click(object sender, RoutedEventArgs e)
         {
@@ -135,19 +144,27 @@ namespace Biomarkt_App_WPF
                 string query = "DELETE FROM Products WHERE ProductCategory = @ProductCategory";
                 SqlParameter[] parameter = { new SqlParameter("@ProductCategory", "TestData") };
 
-                ExecuteQuery(query, parameter);
+                HelperMethods.ExecuteQuery(dbConnection, query, parameter);
             }
             ShowProducts();
+        }
+
+        private void GenerateTestData()
+        {
+            textBoxProductName.Text = "TestData";
+            textBoxProductBrand.Text = "TestData";
+            textBoxProductPrice.Text = "111";
+            comboBoxProductCategory.SelectedIndex = 0;
         }
         #endregion
 
 
         #region Helper Methods
-        
+
         private void ShowProducts()
         {
             string query = "select * from Products";
-            DataTable productsTable = ExecuteQuery(query, null);
+            DataTable productsTable = HelperMethods.ExecuteQuery(dbConnection, query, null);
             ProductsDGV.ItemsSource = productsTable.DefaultView;
         }
 
@@ -171,63 +188,6 @@ namespace Biomarkt_App_WPF
             textBoxProductBrand.Text = "";
             textBoxProductPrice.Text = "";
             comboBoxProductCategory.SelectedIndex = -1;
-        }
-
-        // Execute a given Query
-        private DataTable ExecuteQuery(string query, SqlParameter[] parameters)
-        {
-            DataTable dataTable = new DataTable();
-            try
-            {
-                dbConnection.Open();
-                using (SqlCommand sqlCommand = new SqlCommand(query, dbConnection))
-                {
-                    if (parameters != null)
-                    {
-                        sqlCommand.Parameters.AddRange(parameters);
-                    }
-                    using (SqlDataAdapter dataAdapter = new SqlDataAdapter(sqlCommand))
-                    {
-                        dataAdapter.Fill(dataTable);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Ein Fehler ist aufgetreten: {ex.Message}");
-            }
-            finally
-            {
-                dbConnection.Close();
-            }
-            return dataTable;
-        }
-
-
-        // Validates the user input for product fields
-        private bool ValidateUserInput()
-        {
-            if (string.IsNullOrEmpty(textBoxProductName.Text)
-                || string.IsNullOrEmpty(textBoxProductBrand.Text)
-                || string.IsNullOrEmpty(comboBoxProductCategory.Text)
-                || string.IsNullOrEmpty(textBoxProductPrice.Text)
-                || !float.TryParse(textBoxProductPrice.Text, out _))
-            {
-                MessageBox.Show("Bitte fülle alle Werte aus oder gib einen gültigen Preis ein");
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
-
-        private void GenerateTestData()
-        {
-            textBoxProductName.Text = "TestData";
-            textBoxProductBrand.Text = "TestData";
-            textBoxProductPrice.Text = "111";
-            comboBoxProductCategory.SelectedIndex = 0;
         }
         #endregion
 
