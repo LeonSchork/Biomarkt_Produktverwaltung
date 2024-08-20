@@ -31,7 +31,7 @@
                            Foreground="White" TextAlignment="Center" FontSize="16" FontWeight="Bold" />
             </Grid>
         </Button>
-        <Button x:Name="invoiceButton" Grid.Column="4" Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="2">
+        <Button x:Name="invoiceButton" Grid.Column="4" Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="2" Click="invoiceButton_Click">
             <Grid>
                 <Image Height="165" Source="/Resources/BtnImgBill.png" Stretch="Fill" Width="325"/>
                 <TextBlock Text="Rechnung erstellen" VerticalAlignment="Center" HorizontalAlignment="Center" 

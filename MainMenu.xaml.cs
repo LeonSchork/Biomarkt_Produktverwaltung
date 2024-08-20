@@ -26,7 +26,13 @@ namespace Biomarkt_App_WPF
         {
             ProductsScreen productsScreen = new ProductsScreen();
             productsScreen.Show();
+            this.Close();
+        }
 
+        private void invoiceButton_Click(object sender, RoutedEventArgs e)
+        {
+            CreateInvoice createInvoice = new CreateInvoice();
+            createInvoice.Show();
             this.Close();
         }
     }
