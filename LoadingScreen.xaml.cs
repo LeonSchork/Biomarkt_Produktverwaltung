@@ -13,6 +13,10 @@ namespace Biomarkt_App_WPF
             Loaded += LoadingScreen_Loaded;
 
         }
+        private void ProgressBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+
+        }
 
         private async void LoadingScreen_Loaded(object sender, RoutedEventArgs e)
         {
@@ -32,7 +36,7 @@ namespace Biomarkt_App_WPF
                 });
 
                 // Simulate some work 
-                await Task.Delay(50);
+                await Task.Delay(30);
             }
 
             MainMenu mainMenu = new MainMenu();
@@ -41,14 +45,7 @@ namespace Biomarkt_App_WPF
             this.Close();
         }
 
-        private void ProgressBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
 
-        }
 
-        private void StartTimer()
-        {
-
-        }
     }
 }

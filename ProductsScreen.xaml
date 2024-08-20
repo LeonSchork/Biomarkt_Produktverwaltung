@@ -7,33 +7,74 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         Title="ProductsScreen" Height="800" Width="1200">
+
+    <!-- Window Resources: Styles for various controls -->
     <Window.Resources>
+        <!-- Style for TextBox in input fields -->
         <Style x:Key="inputStackTextBox" TargetType="TextBox">
             <Setter Property="Background" Value="Black"/>
-            <Setter Property="BorderBrush" Value="White"/>
-            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="DimGray"/>
+            <Setter Property="BorderThickness" Value="2"/>
             <Setter Property="Cursor" Value="IBeam"/>
-            <Setter Property="Height" Value="35"/>
-            <Setter Property="Foreground" Value="White"/>
             <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Height" Value="35"/>
         </Style>
+
+        <!-- Style for Label in input fields -->
         <Style x:Key="inputStackLabel" TargetType="Label">
             <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="FontWeight" Value="Medium"/>
             <Setter Property="FontSize" Value="20"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="Foreground" Value="White"/>
         </Style>
+
+        <!-- Style for CRUD buttons -->
         <Style x:Key="crudButtons" TargetType="Button">
             <Setter Property="Background" Value="Black"/>
+            <Setter Property="BorderBrush" Value="DimGray"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FontSize" Value="20"/>
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="Height" Value="35"/>
-            <Setter Property="FontSize" Value="20"/>
-            <Setter Property="BorderBrush" Value="White"/>
-            <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Margin" Value="0,10,0,10"/>
         </Style>
+
+        <!-- Style for ComboBox in input fields -->
+        <Style x:Key="categoryComboBox" TargetType="ComboBox">
+            <Setter Property="Background" Value="Green"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Padding" Value="5"/>
+        </Style>
+
+        <!-- Style for DataGrid -->
+        <Style x:Key="productsDataGrid" TargetType="DataGrid">
+            <Setter Property="Background" Value="Black"/>
+            <Setter Property="BorderBrush" Value="DimGray"/>
+            <Setter Property="BorderThickness" Value="3"/>
+            <Setter Property="CanUserResizeColumns" Value="False"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="HorizontalGridLinesBrush" Value="LightGray"/>
+            <Setter Property="RowBackground" Value="Gray"/>
+            <Setter Property="VerticalGridLinesBrush" Value="LightGray"/>
+        </Style>
+
+        <!-- Style for DataGrid Column Header -->
+        <Style x:Key="dataGridColumnHeader" TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontStyle" Value="Normal"/>
+            <Setter Property="Foreground" Value="Black"/>
+        </Style>
     </Window.Resources>
+
+    <!-- Main Grid Layout -->
     <Grid Margin="0,0,0,0">
+        <!-- Grid Column Definitions -->
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"/>
             <ColumnDefinition/>
@@ -43,6 +84,8 @@
             <ColumnDefinition/>
             <ColumnDefinition Width="20"/>
         </Grid.ColumnDefinitions>
+
+        <!-- Grid Row Definitions -->
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
             <RowDefinition/>
@@ -54,18 +97,27 @@
             <RowDefinition/>
             <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
+
+        <!-- Background Image -->
         <Image Grid.ColumnSpan="7" Grid.RowSpan="9" Source="/Resources/ImgBgProducts.png" Stretch="Fill"/>
+
+        <!-- Product Name Input -->
         <StackPanel Grid.Row="1" Grid.Column="1">
             <Label Content="Name" Style="{StaticResource inputStackLabel}"/>
             <TextBox x:Name="textBoxProductName" Style="{StaticResource inputStackTextBox}" />
         </StackPanel>
+
+        <!-- Product Brand Input -->
         <StackPanel Grid.Row="2" Grid.Column="1">
             <Label Content="Marke" Style="{StaticResource inputStackLabel}"/>
             <TextBox x:Name="textBoxProductBrand" Style="{StaticResource inputStackTextBox}" />
         </StackPanel>
+
+        <!-- Product Category Input -->
         <StackPanel Grid.Row="3" Grid.Column="1">
             <Label Content="Kategorie" Style="{StaticResource inputStackLabel}"/>
-            <ComboBox x:Name="comboBoxProductCategory" Height="35" Background="Black" BorderBrush="Green" BorderThickness="1">
+            <ComboBox x:Name="comboBoxProductCategory" Height="35" BorderThickness="1" Style="{StaticResource categoryComboBox}">
+                <ComboBoxItem Content="TestData"/>
                 <ComboBoxItem Content="Obst"/>
                 <ComboBoxItem Content="Gemüse"/>
                 <ComboBoxItem Content="Fleisch"/>
@@ -73,16 +125,39 @@
                 <ComboBoxItem Content="Getränke"/>
             </ComboBox>
         </StackPanel>
+
+        <!-- Product Price Input -->
         <StackPanel Grid.Row="4" Grid.Column="1">
             <Label Content="Preis" Style="{StaticResource inputStackLabel}"/>
             <TextBox x:Name="textBoxProductPrice" Style="{StaticResource inputStackTextBox}" />
         </StackPanel>
-        <StackPanel Grid.Column="1" Grid.Row="5" Margin="2,2,10,2" Grid.RowSpan="3">
+
+        <!-- CRUD Buttons -->
+        <StackPanel Grid.Column="1" Grid.Row="5" Margin="0,2,0,2" Grid.RowSpan="3">
             <Button x:Name="btnProductSafe" Content="Speichern" Style="{StaticResource crudButtons}" Click="btnProductSafe_Click" />
-            <Button x:Name="btnProductEdit" Content="Bearbeiten" Style="{StaticResource crudButtons}" Click="btnProductEdit_Click" />
+            <Button x:Name="btnProductEdit" Content="Bearbeitung Speichern" Style="{StaticResource crudButtons}" Click="btnProductEdit_Click" />
             <Button x:Name="btnProductClear" Content="Felder leeren" Style="{StaticResource crudButtons}" Click="btnProductClear_Click"/>
             <Button x:Name="btnProductDelete" Content="Löschen" Style="{StaticResource crudButtons}" Click="btnProductDelete_Click"/>
         </StackPanel>
-        <DataGridCell Grid.Column="3" Grid.Row="1" Grid.ColumnSpan="3" Grid.RowSpan="7" Background="Black"/>
+
+        <!-- Dev Buttons -->
+        <StackPanel Grid.Row="7" Grid.Column="1">
+            <Button x:Name="InsertTestData" Content="TestData" Style="{StaticResource crudButtons}" Click="InsertTestData_Click"/>
+            <Button x:Name="DeleteTestData" Content="Delete TestData" Style="{StaticResource crudButtons}" Click="DeleteTestData_Click"/>
+        </StackPanel>
+
+        <!-- Products DataGrid -->
+        <DataGrid x:Name="ProductsDGV" AutoGenerateColumns="False" ColumnWidth="*" 
+                  Grid.Column="3" Grid.Row="1" Grid.ColumnSpan="3" Grid.RowSpan="7" 
+                  Style="{StaticResource productsDataGrid}" ColumnHeaderStyle="{StaticResource dataGridColumnHeader}" 
+                  SelectionChanged="ProductsDGV_SelectionChanged" IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Id" Binding="{Binding Path=ProductId}" Visibility="Collapsed"/>
+                <DataGridTextColumn Header="Name" Binding="{Binding Path=ProductName}"/>
+                <DataGridTextColumn Header="Marke" Binding="{Binding Path=ProductBrand}"/>
+                <DataGridTextColumn Header="Kategory" Binding="{Binding Path=ProductCategory}"/>
+                <DataGridTextColumn Header="Preis" Binding="{Binding Path=ProductPrice}"/>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </Window>
