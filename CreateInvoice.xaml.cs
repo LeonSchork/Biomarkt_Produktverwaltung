@@ -59,6 +59,8 @@ namespace Biomarkt_App_WPF
 
 
         #region Helper Methods
+
+        // Helper Method to query for invoice detail, display them and calculate overall price
         private decimal ShowInvoiceDetails(int id)
         {
             string query = @"SELECT 
