@@ -37,13 +37,14 @@
         <Image Grid.ColumnSpan="9" Grid.RowSpan="9" Source="/Resources/BtnImgBill.png" Stretch="Fill"/>
         
         <!-- Data Grid -->
-        <DataGrid Grid.Column="5" Grid.Row="1" Grid.ColumnSpan="3" Grid.RowSpan="6" ColumnWidth="*" Style="{StaticResource productsDataGrid}" ColumnHeaderStyle="{StaticResource dataGridColumnHeader}" SelectionChanged="DataGrid_SelectionChanged">
+        <DataGrid x:Name="InvoiceDataGrid" Grid.Column="5" Grid.Row="1" AutoGenerateColumns="False" Grid.ColumnSpan="3" Grid.RowSpan="6" ColumnWidth="*" Style="{StaticResource productsDataGrid}" ColumnHeaderStyle="{StaticResource dataGridColumnHeader}" SelectionChanged="DataGrid_SelectionChanged">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Id" Binding="{Binding Path=productId}" Visibility="Collapsed"/>
-                <DataGridTextColumn Header="Name" Binding="{Binding Path=ProductName}"/>
-                <DataGridTextColumn Header="Marke" Binding="{Binding Path=ProductBrand}"/>
-                <DataGridTextColumn Header="Kategory" Binding="{Binding Path=ProductCategory}"/>
-                <DataGridTextColumn Header="Preis" Binding="{Binding Path=ProductPrice}"/>
+                <DataGridTextColumn Header="Rechnungs Id" Binding="{Binding Path=InvoiceId}"/>
+                <DataGridTextColumn Header="Kunden Id" Binding="{Binding Path=CustomerId}" Visibility="Collapsed"/>
+                <DataGridTextColumn Header="Kunden Name" Binding="{Binding Path=CustomerName}"/>
+                <DataGridTextColumn Header="Addresse" Binding="{Binding Path=CustomerAddress}"/>
+                <DataGridTextColumn Header="Gesamt Preis" Binding="{Binding Path=OverallPrice}"/>
+                <DataGridTextColumn Header="Datum" Binding="{Binding Path=InvoiceDate, StringFormat=\{0:dd.MM.yyyy\}}"/>
                 <DataGridTemplateColumn Header="Action" Width="60">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
