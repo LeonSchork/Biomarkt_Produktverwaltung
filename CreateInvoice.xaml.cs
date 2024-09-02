@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.Common;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,9 +22,11 @@ namespace Biomarkt_App_WPF
     /// </summary>
     public partial class CreateInvoice : Window
     {
+
         public CreateInvoice()
         {
             InitializeComponent();
+            ShowInvoice();
         }
 
         private void GoBackBtn_Click(object sender, RoutedEventArgs e)
@@ -35,5 +40,23 @@ namespace Biomarkt_App_WPF
         {
 
         }
+
+        #region Helper Methods
+
+        
+        private void ShowProducts()
+        {
+            DataTable productsTable = HelperMethods.GetDataBase("Product");
+        }
+
+
+        private void ShowInvoice()
+        {
+            DataTable invoiceTable = HelperMethods.GetDataBase("Invoice");
+            InvoiceDataGrid.ItemsSource = invoiceTable.DefaultView;
+        }
+
+
+        #endregion
     }
 }

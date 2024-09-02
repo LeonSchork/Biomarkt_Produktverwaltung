@@ -9,18 +9,26 @@ using System.Windows;
 using System.Data.Common;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Configuration;
 
 namespace Biomarkt_App_WPF
 {
     public static class HelperMethods
     {
-        public static DataTable ExecuteQuery(SqlConnection dbConnection, string query, SqlParameter[] parameters)
+        public static SqlConnection GetDbConnection()
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings["ProNaturDB"].ConnectionString;
+            return new SqlConnection(connectionString);
+        }
+
+        public static DataTable ExecuteQuery(string query, SqlParameter[] parameters)
         {
             DataTable dataTable = new DataTable();
+            SqlConnection sqlConnection = GetDbConnection();
             try
             {
-                dbConnection.Open();
-                using (SqlCommand sqlCommand = new SqlCommand(query, dbConnection))
+                sqlConnection.Open();
+                using (SqlCommand sqlCommand = new SqlCommand(query, sqlConnection))
                 {
                     if (parameters != null)
                     {
@@ -38,7 +46,7 @@ namespace Biomarkt_App_WPF
             }
             finally
             {
-                dbConnection.Close();
+                sqlConnection.Close();
             }
             return dataTable;
         }
@@ -54,16 +62,42 @@ namespace Biomarkt_App_WPF
                 }
             }
             return true;
-        }  
+        }
 
         public static bool ValidateFloatInput(string input)
         {
-            if(!float.TryParse(input, out _))
+            if (!float.TryParse(input, out _))
             {
                 MessageBox.Show("Bitte gib eine Gültige Zahl ein");
                 return false;
             }
             return true;
         }
+
+
+        public static DataTable GetDataBase(string tableName)
+        {
+            // Validate and sanitize the table name
+            if (string.IsNullOrEmpty(tableName) || !IsValidTableName(tableName))
+            {
+                throw new ArgumentException($"Invalid table name. {tableName}");
+            }
+
+            string query = $"SELECT * FROM {tableName}";
+            return ExecuteQuery(query, null);
+        }
+
+        private static bool IsValidTableName(string tableName)
+        {
+            string[] allowedTables = { "Product", "Invoice", "InvoiceItem", "Customer"};
+
+            if (allowedTables.Contains(tableName) && tableName.All(char.IsLetterOrDigit))
+            {
+                return true;
+
+            }
+            else return false;
+        }
+
     }
 }

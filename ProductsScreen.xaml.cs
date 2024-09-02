@@ -23,7 +23,6 @@ namespace Biomarkt_App_WPF
     public partial class ProductsScreen : Window
     {
         // Fields
-        private SqlConnection dbConnection = new SqlConnection(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\pavel\Documents\ProNaturDB.mdf;Integrated Security=True;Connect Timeout=30");
         private int lastSelectedProductKey;
 
         // Constructor
@@ -36,23 +35,22 @@ namespace Biomarkt_App_WPF
         // Event handler to save a new product to the database
         private void btnProductSafe_Click(object sender, RoutedEventArgs e)
         {
-            string[] inputValues = { textBoxProductName.Text, textBoxProductBrand.Text, comboBoxProductCategory.Text };
+            string[] userStringInput = { textBoxProductName.Text, textBoxProductBrand.Text, comboBoxProductCategory.Text };
 
-            if (HelperMethods.ValidateStringInput(inputValues) && HelperMethods.ValidateFloatInput(textBoxProductPrice.Text))
+            if (HelperMethods.ValidateStringInput(userStringInput) && HelperMethods.ValidateFloatInput(textBoxProductPrice.Text))
             {
                 Product product = GetInputFields();
-                string query = "INSERT INTO Products (ProductName, ProductBrand, ProductCategory, ProductPrice) VALUES (@ProductName, @ProductBrand, @ProductCategory, @ProductPrice)";
+                string query = "INSERT INTO Product (ProductName, ProductBrand, ProductCategory, ProductPrice) VALUES (@ProductName, @ProductBrand, @ProductCategory, @ProductPrice)";
                 SqlParameter[] parameters = {
                     new SqlParameter("@ProductName", product.Name),
                     new SqlParameter("@ProductBrand", product.Brand),
                     new SqlParameter("@ProductCategory", product.Category),
-                    new SqlParameter("@ProductPrice", product.Price) 
+                    new SqlParameter("@ProductPrice", product.Price)
                 };
-                HelperMethods.ExecuteQuery(dbConnection, query, parameters);
+                HelperMethods.ExecuteQuery(query, parameters);
                 ShowProducts();
                 ClearProductFields();
             }
-
         }
 
         // Event handler to edit the selected product
@@ -64,7 +62,7 @@ namespace Biomarkt_App_WPF
                 return;
             }
             Product product = GetInputFields();
-            string query = "UPDATE Products SET ProductName = @ProductName, ProductBrand = @ProductBrand, ProductCategory = @ProductCategory, ProductPrice = @ProductPrice WHERE Id = @Id";
+            string query = "UPDATE Product SET ProductName = @ProductName, ProductBrand = @ProductBrand, ProductCategory = @ProductCategory, ProductPrice = @ProductPrice WHERE Id = @Id";
             SqlParameter[] parameters = {
                 new SqlParameter("@Id", lastSelectedProductKey),
                 new SqlParameter("@ProductName", product.Name),
@@ -72,23 +70,22 @@ namespace Biomarkt_App_WPF
                 new SqlParameter("@ProductCategory", product.Category),
                 new SqlParameter("@ProductPrice", product.Price)
             };
-            HelperMethods.ExecuteQuery(dbConnection, query, parameters);
+            HelperMethods.ExecuteQuery(query, parameters);
             ShowProducts();
         }
 
         // Event handler to delete the selected product
         private void btnProductDelete_Click(object sender, RoutedEventArgs e)
         {
-            // Delete selected product
             if (lastSelectedProductKey == 0)
             {
                 MessageBox.Show("bitte wähle ein Element aus");
                 return;
             }
 
-            string query = "DELETE FROM Products WHERE Id = @Id";
-            SqlParameter[] parameters = {new SqlParameter("@Id", lastSelectedProductKey)};
-            HelperMethods.ExecuteQuery(dbConnection, query, parameters);
+            string query = "DELETE FROM Product WHERE Id = @Id";
+            SqlParameter[] parameters = { new SqlParameter("@Id", lastSelectedProductKey) };
+            HelperMethods.ExecuteQuery(query, parameters);
             ShowProducts();
         }
 
@@ -141,10 +138,10 @@ namespace Biomarkt_App_WPF
             MessageBoxResult result = MessageBox.Show("Möchtest du wirklich alle TestData Einträge Löschen?", "Bestätigen", MessageBoxButton.YesNo);
             if (result == MessageBoxResult.Yes)
             {
-                string query = "DELETE FROM Products WHERE ProductCategory = @ProductCategory";
+                string query = "DELETE FROM Product WHERE ProductCategory = @ProductCategory";
                 SqlParameter[] parameter = { new SqlParameter("@ProductCategory", "TestData") };
 
-                HelperMethods.ExecuteQuery(dbConnection, query, parameter);
+                HelperMethods.ExecuteQuery(query, parameter);
             }
             ShowProducts();
         }
@@ -156,16 +153,11 @@ namespace Biomarkt_App_WPF
             textBoxProductPrice.Text = "111";
             comboBoxProductCategory.SelectedIndex = 0;
         }
-        #endregion
-
-
-        #region Helper Methods
-
         private void ShowProducts()
         {
-            string query = "select * from Products";
-            DataTable productsTable = HelperMethods.ExecuteQuery(dbConnection, query, null);
+            DataTable productsTable = HelperMethods.GetDataBase("Product");
             ProductsDGV.ItemsSource = productsTable.DefaultView;
+            
         }
 
         private Product GetInputFields()
