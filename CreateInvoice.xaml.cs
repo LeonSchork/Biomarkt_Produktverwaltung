@@ -12,8 +12,10 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+
 
 namespace Biomarkt_App_WPF
 {
@@ -23,6 +25,10 @@ namespace Biomarkt_App_WPF
     public partial class CreateInvoice : Window
     {
 
+        // Fields
+        private int lastSelectedInvoiceKey;
+
+        // Constructor
         public CreateInvoice()
         {
             InitializeComponent();
@@ -38,25 +44,76 @@ namespace Biomarkt_App_WPF
 
         private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            // Check if there is a selected item
+            if (InvoiceDataGrid.SelectedItem is DataRowView rowView)
+            {
+                lastSelectedInvoiceKey = (int)rowView["InvoiceId"];
+            }
 
         }
 
-        #region Helper Methods
-
-        
-        private void ShowProducts()
+        private void ShowInvoiceItems_Click(object sender, RoutedEventArgs e)
         {
-            DataTable productsTable = HelperMethods.GetDataBase("Product");
+            InvoiceItemSum.Content = ShowInvoiceDetails(lastSelectedInvoiceKey);
+        }
+
+
+        #region Helper Methods
+        private decimal ShowInvoiceDetails(int id)
+        {
+            string query = @"SELECT 
+                                Invoice.InvoiceId, 
+                                item.InvoiceId, 
+                                item.ItemQuantity, 
+                                item.ItemPrice, 
+                                Product.ProductName 
+                            FROM 
+                                [dbo].[InvoiceItem] item
+                            INNER JOIN 
+                                Invoice ON Invoice.InvoiceId = item.InvoiceId 
+                            INNER JOIN 
+                                Product ON Product.Id = item.ProductId 
+                            WHERE 
+                                Invoice.InvoiceId = @InvoiceId";
+
+            SqlParameter[] parameter = new SqlParameter[]
+            {
+                new SqlParameter("@InvoiceId", id)
+            };
+            DataTable detailsTable = HelperMethods.ExecuteQuery(query, parameter);
+            InvoiceItemsDG.ItemsSource = detailsTable.DefaultView;
+
+            decimal overallPrice = 0;
+            foreach (DataRow row in detailsTable.Rows)
+            {
+                int itemQuantity = Convert.ToInt32(row["ItemQuantity"]);
+                decimal itemPrice = Convert.ToDecimal(row["ItemPrice"]);
+                overallPrice += itemPrice * itemQuantity;
+            }
+            return overallPrice;
         }
 
 
         private void ShowInvoice()
         {
-            DataTable invoiceTable = HelperMethods.GetDataBase("Invoice");
+            string query = @"
+                SELECT 
+                    i.InvoiceId,
+                    i.CustomerId,
+                    c.CustomerName,
+                    c.CustomerAddress,
+                    i.InvoiceDate
+                FROM 
+                    [dbo].[Invoice] i
+                INNER JOIN 
+                    [dbo].[Customer] c ON i.CustomerId = c.CustomerId;
+            ";
+            DataTable invoiceTable = HelperMethods.ExecuteQuery(query,null);
             InvoiceDataGrid.ItemsSource = invoiceTable.DefaultView;
         }
 
 
         #endregion
+
     }
 }

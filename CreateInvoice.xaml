@@ -36,31 +36,37 @@
         <!-- Background Image -->
         <Image Grid.ColumnSpan="9" Grid.RowSpan="9" Source="/Resources/BtnImgBill.png" Stretch="Fill"/>
         
-        <!-- Data Grid -->
+        <!-- Invoice Data Grid -->
         <DataGrid x:Name="InvoiceDataGrid" Grid.Column="5" Grid.Row="1" AutoGenerateColumns="False" Grid.ColumnSpan="3" Grid.RowSpan="6" ColumnWidth="*" Style="{StaticResource productsDataGrid}" ColumnHeaderStyle="{StaticResource dataGridColumnHeader}" SelectionChanged="DataGrid_SelectionChanged">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Rechnungs Id" Binding="{Binding Path=InvoiceId}"/>
+                <DataGridTextColumn Header="Rechnungs Id" Binding="{Binding Path=InvoiceId}" />
                 <DataGridTextColumn Header="Kunden Id" Binding="{Binding Path=CustomerId}" Visibility="Collapsed"/>
-                <DataGridTextColumn Header="Kunden Name" Binding="{Binding Path=CustomerName}"/>
-                <DataGridTextColumn Header="Addresse" Binding="{Binding Path=CustomerAddress}"/>
-                <DataGridTextColumn Header="Gesamt Preis" Binding="{Binding Path=OverallPrice}"/>
+                <DataGridTextColumn Header="Kunden Name" Binding="{Binding Path=CustomerName}" />
+                <DataGridTextColumn Header="Addresse" Binding="{Binding Path=CustomerAddress}" Width="SizeToCells"/>
+                <!--<DataGridTextColumn Header="Gesamt Preis" Binding="{Binding Path=OverallPrice, StringFormat='{}{0} €'}"/>-->
                 <DataGridTextColumn Header="Datum" Binding="{Binding Path=InvoiceDate, StringFormat=\{0:dd.MM.yyyy\}}"/>
-                <DataGridTemplateColumn Header="Action" Width="60">
+                <DataGridTemplateColumn Header="Action" Width="SizeToCells">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Content="Action" />
+                            <Button x:Name="ShowInvoiceItems" Click="ShowInvoiceItems_Click" Content="Positionen" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
-
-        <DataGrid Grid.Row="1" Grid.Column="3" Grid.RowSpan="6" ColumnWidth="*" Style="{StaticResource productsDataGrid}" ColumnHeaderStyle="{StaticResource dataGridColumnHeader}">
+        
+        <!-- Order Items Data Grid -->
+        <DataGrid x:Name="InvoiceItemsDG" Grid.Row="1" Grid.Column="3" Grid.RowSpan="5" ColumnWidth="*" AutoGenerateColumns="False" Style="{StaticResource productsDataGrid}" ColumnHeaderStyle="{StaticResource dataGridColumnHeader}" >
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Anzahl"/>
-                <DataGridTextColumn Header="Produkte" Binding="{Binding Path=ProductName}"/>
+                <DataGridTextColumn Header="Produkt" Binding="{Binding Path=ProductName}"/>
+                <DataGridTextColumn Header="Anzahl" Binding="{Binding Path=ItemQuantity}"/>
+                <DataGridTextColumn Header="Stückpreis" Binding="{Binding Path=ItemPrice, StringFormat='{}{0} €'}"/>
             </DataGrid.Columns>
         </DataGrid>
+        <StackPanel Grid.Row="6" Grid.Column="3" Background="Black" Margin="0,20,0,0">
+            <Label Content="Gesamt Preis:" Foreground="White" FontSize="25"/>
+            <Label x:Name="InvoiceItemSum" Content="546465" ContentStringFormat="{}{0} €" Foreground="White" FontSize="25"/>
+        </StackPanel>
         <!-- User input fields -->
         <StackPanel Grid.Row="1" Grid.Column="1" Grid.RowSpan="3">
             <Label Content="Kundenname" Style="{StaticResource inputStackLabel}"/>
